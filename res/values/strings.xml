@@ -19,4 +19,7 @@
     <string name="set_plant_place">Set the plant place</string>
 <string name="gardenImage_desc">Garden image.</string>
 <string name="plantImage_desc">Plant image.</string>
+<string name="btnIntendS">Add image</string>
+   <string name="cannot">Cannot</string>
+    <string name="album_name">MyGardenAlbum</string>
 </resources>

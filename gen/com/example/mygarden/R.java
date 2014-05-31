@@ -27,22 +27,23 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class id {
         public static final int add_garden=0x7f060001;
         public static final int add_plant=0x7f060000;
-        public static final int gardenImage=0x7f06000f;
+        public static final int btnIntendS=0x7f06000c;
+        public static final int gardenImage=0x7f060010;
         public static final int garden_name=0x7f060003;
         public static final int garden_place=0x7f060005;
         public static final int garden_type=0x7f060007;
-        public static final int image=0x7f06000d;
+        public static final int image=0x7f06000e;
         public static final int lbl_garden_name=0x7f060002;
         public static final int lbl_plant_name=0x7f060008;
         public static final int lbl_set_place=0x7f060004;
         public static final int lbl_set_type=0x7f060006;
-        public static final int name=0x7f060010;
-        public static final int plantImage=0x7f060011;
+        public static final int name=0x7f060011;
+        public static final int plantImage=0x7f060012;
         public static final int plant_name=0x7f060009;
         public static final int plant_place=0x7f06000a;
         public static final int plant_type=0x7f06000b;
-        public static final int text=0x7f06000e;
-        public static final int toast_layout_root=0x7f06000c;
+        public static final int text=0x7f06000f;
+        public static final int toast_layout_root=0x7f06000d;
     }
     public static final class layout {
         public static final int activity_plants=0x7f030000;
@@ -56,7 +57,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class string {
         public static final int add_garden=0x7f040002;
         public static final int add_plant=0x7f04000a;
+        public static final int album_name=0x7f040014;
         public static final int app_name=0x7f040000;
+        public static final int btnIntendS=0x7f040012;
+        public static final int cannot=0x7f040013;
         public static final int gardenImage_desc=0x7f040010;
         public static final int hello_world=0x7f040001;
         public static final int lbl_garden_name=0x7f040004;

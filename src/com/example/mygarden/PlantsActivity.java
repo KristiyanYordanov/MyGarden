@@ -44,7 +44,7 @@ public class PlantsActivity extends ListActivity {
 		System.out.println("c.getCount()=" + c.getCount());
 		mAdapter = new SimpleCursorAdapter(this, R.layout.list_plants, c,
 				DatabaseOpenHelperPlant.columns,
-				new int[] {  0, R.id.plant_name }, 0);
+				new int[] { 0, R.id.plant_name }, 0);
 
 		setListAdapter(mAdapter);
 
