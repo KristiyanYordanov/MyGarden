@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+ <TextView
+        android:id="@+id/lbl_garden_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_garden_name" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/garden_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/set_garden_name" 
+        android:inputType="text">
+    </EditText>
+
+    <TextView
+        android:id="@+id/lbl_set_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_set_place" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/garden_place"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/set_garden_place" 
+        android:inputType="text">
+    </EditText>
+    
+     <TextView
+        android:id="@+id/lbl_set_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_set_type" >
+    </TextView>
+
+    <EditText
+        android:id="@+id/garden_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/set_garden_type" 
+        android:inputType="text">
+    </EditText>
+
+    <Button
+        android:id="@+id/add_garden"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_garden" />
+
+</LinearLayout>

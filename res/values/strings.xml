@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyGarden</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="add_garden">Add Garden</string>
+    <string name="set_garden_name">Set the garden name.</string>
+    <string name="lbl_garden_name">Garden name:</string>
+    <string name="missing_garden_name">Please set garden name.</string>
+    <string name="lbl_set_place">Place:</string>
+    <string name="set_garden_place">Set the garden place</string>
+    <string name="lbl_set_type">Type:</string>
+    <string name="set_garden_type">Set the garden type</string>
+    <string name="add_plant">Add plant</string>
+    <string name="set_plant_name">Set the plant name.</string>
+    <string name="lbl_plant_name">plant name:</string>
+    <string name="missing_plant_name">Please set plant name.</string>
+    <string name="set_plant_type">Set the plant type</string>
+    <string name="set_plant_place">Set the plant place</string>
+
+</resources>
