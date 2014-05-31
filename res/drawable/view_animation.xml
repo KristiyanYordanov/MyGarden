@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true" 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <item
+        android:drawable="@drawable/black_background"
+        android:duration="100"/>
+    
+    <item
+        android:drawable="@drawable/output_0"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_1"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_2"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_3"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_4"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_5"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_6"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_7"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_8"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_9"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_10"
+        android:duration="100"/>
+    
+    <item
+        android:drawable="@drawable/output_11"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_12"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_13"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_14"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_15"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_16"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_17"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/output_18"
+        android:duration="100"/>
+
+</animation-list>

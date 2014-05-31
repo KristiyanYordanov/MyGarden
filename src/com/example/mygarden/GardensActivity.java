@@ -17,7 +17,7 @@ import android.widget.SimpleCursorAdapter;
 
 import com.example.mygarden.db.DatabaseOpenHelper;
 
-public class StartActivity extends ListActivity {
+public class GardensActivity extends ListActivity {
 
 	private SQLiteDatabase mDB = null;
 	private DatabaseOpenHelper mDbHelper;

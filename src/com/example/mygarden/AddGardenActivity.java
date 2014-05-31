@@ -24,6 +24,7 @@ public class AddGardenActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_garden);
 
+		
 		final EditText name = (EditText) findViewById(R.id.garden_name);
 		final EditText place = (EditText) findViewById(R.id.garden_place);
 		final EditText type = (EditText) findViewById(R.id.garden_type);
@@ -64,7 +65,7 @@ public class AddGardenActivity extends Activity {
 
 					values.clear();
 					Intent startActivity = new Intent(getApplicationContext(),
-							StartActivity.class);
+							GardensActivity.class);
 					startActivity(startActivity);
 
 				}

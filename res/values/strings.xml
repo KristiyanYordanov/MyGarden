@@ -17,9 +17,14 @@
     <string name="missing_plant_name">Please set plant name.</string>
     <string name="set_plant_type">Set the plant type</string>
     <string name="set_plant_place">Set the plant place</string>
-<string name="gardenImage_desc">Garden image.</string>
-<string name="plantImage_desc">Plant image.</string>
-<string name="btnIntendS">Add image</string>
-   <string name="cannot">Cannot</string>
+    <string name="gardenImage_desc">Garden image.</string>
+    <string name="plantImage_desc">Plant image.</string>
+    <string name="btnIntendS">Add image</string>
+    <string name="cannot">Cannot</string>
     <string name="album_name">MyGardenAlbum</string>
+    <string name="animation_desc">animation</string>
+    <string name="load_button_string">Load</string>
+
+    <color name="black">#FF000000</color>
+
 </resources>

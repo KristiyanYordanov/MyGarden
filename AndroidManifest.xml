@@ -16,7 +16,7 @@
         android:label="@string/app_name"
          >
         <activity
-            android:name="com.example.mygarden.StartActivity"
+            android:name="com.example.mygarden.GraphicsFrameAnimationActivity"
              android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" 
             android:theme="@style/FullscreenTheme" >
@@ -26,6 +26,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+         <activity
+            android:name="com.example.mygarden.GardensActivity"
+            android:label="@string/app_name" 
+             android:configChanges="orientation|keyboardHidden|screenSize">
         </activity>
         <activity
             android:name="com.example.mygarden.AddGardenActivity"
