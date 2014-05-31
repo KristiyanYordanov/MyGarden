@@ -20,12 +20,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class drawable {
         public static final int exclamation_mark=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
+        public static final int garden=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int plant=0x7f020003;
     }
     public static final class id {
-        public static final int _id=0x7f06000f;
         public static final int add_garden=0x7f060001;
         public static final int add_plant=0x7f060000;
+        public static final int gardenImage=0x7f06000f;
         public static final int garden_name=0x7f060003;
         public static final int garden_place=0x7f060005;
         public static final int garden_type=0x7f060007;
@@ -35,6 +37,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int lbl_set_place=0x7f060004;
         public static final int lbl_set_type=0x7f060006;
         public static final int name=0x7f060010;
+        public static final int plantImage=0x7f060011;
         public static final int plant_name=0x7f060009;
         public static final int plant_place=0x7f06000a;
         public static final int plant_type=0x7f06000b;
@@ -54,6 +57,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int add_garden=0x7f040002;
         public static final int add_plant=0x7f04000a;
         public static final int app_name=0x7f040000;
+        public static final int gardenImage_desc=0x7f040010;
         public static final int hello_world=0x7f040001;
         public static final int lbl_garden_name=0x7f040004;
         public static final int lbl_plant_name=0x7f04000c;
@@ -61,6 +65,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int lbl_set_type=0x7f040008;
         public static final int missing_garden_name=0x7f040005;
         public static final int missing_plant_name=0x7f04000d;
+        public static final int plantImage_desc=0x7f040011;
         public static final int set_garden_name=0x7f040003;
         public static final int set_garden_place=0x7f040007;
         public static final int set_garden_type=0x7f040009;

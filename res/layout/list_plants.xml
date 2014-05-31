@@ -2,23 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E7FCC4"
     android:baselineAligned="true"
     android:orientation="horizontal" >
-
-    <TextView
-        android:id="@+id/_id"
+     
+ 
+    <ImageView
+        android:id="@+id/plantImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:textSize="24sp" />
+        android:contentDescription="@string/plantImage_desc"
+        android:src="@drawable/plant" />
 
     <TextView
         android:id="@+id/plant_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:textSize="24sp" />
-   
-    
+        android:textColor="#72776A"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#72776A"
     android:orientation="vertical" >
 
     <ListView
@@ -15,7 +16,10 @@
         style="?metaButtonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
-        android:text="@string/add_garden" />
+         android:text="@string/add_garden"
+        android:background="#ACD661"
+        android:textColor="#999C92"
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

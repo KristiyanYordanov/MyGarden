@@ -14,7 +14,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 import com.example.mygarden.db.DatabaseOpenHelper;
 
@@ -33,18 +32,12 @@ public class StartActivity extends ListActivity {
 		mDbHelper = new DatabaseOpenHelper(this);
 		// Get the underlying database for writing
 		mDB = mDbHelper.getWritableDatabase();
-		// start with an empty database
-		// clearAll();
-
-		// Insert records
-		// insertArtists();
 
 		// Create a cursor
 		Cursor c = readGardens();
 		System.out.println("c.getCount()=" + c.getCount());
 		mAdapter = new SimpleCursorAdapter(this, R.layout.list_gardens, c,
-				DatabaseOpenHelper.columns, new int[] { R.id._id, R.id.name },
-				0);
+				DatabaseOpenHelper.columns, new int[] { 0, R.id.name }, 0);
 
 		setListAdapter(mAdapter);
 
@@ -69,11 +62,11 @@ public class StartActivity extends ListActivity {
 
 				SQLiteCursor cursor = (SQLiteCursor) mAdapter.getItem(position);
 				cursor.moveToPosition(position);
-				//get _ID of the selected row
+				// get _ID of the selected row
 				int gardenId = cursor.getInt(0);
-//				Toast.makeText(getApplicationContext(),
-//						"List View Clicked:" + gardenId, Toast.LENGTH_LONG)
-//						.show();
+				// Toast.makeText(getApplicationContext(),
+				// "List View Clicked:" + gardenId, Toast.LENGTH_LONG)
+				// .show();
 
 				Intent plantsActivity = new Intent(getApplicationContext(),
 						PlantsActivity.class);
@@ -111,13 +104,11 @@ public class StartActivity extends ListActivity {
 		Cursor c = readGardens();
 		System.out.println("c.getCount()=" + c.getCount());
 		mAdapter = new SimpleCursorAdapter(this, R.layout.list_gardens, c,
-				DatabaseOpenHelper.columns, new int[] { R.id._id, R.id.name },
-				0);
+				DatabaseOpenHelper.columns, new int[] { 0, R.id.name }, 0);
 
 		setListAdapter(mAdapter);
 		super.onRestart();
 	}
-
 
 	// Returns all artist records in the database
 	private Cursor readGardens() {
@@ -160,5 +151,13 @@ public class StartActivity extends ListActivity {
 		// mDbHelper.deleteDatabase();
 
 		super.onDestroy();
+	}
+
+	@Override
+	public void onBackPressed() {
+		Intent exitIntent = new Intent(Intent.ACTION_MAIN);
+		exitIntent.addCategory(Intent.CATEGORY_HOME);
+		exitIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(exitIntent);
 	}
 }

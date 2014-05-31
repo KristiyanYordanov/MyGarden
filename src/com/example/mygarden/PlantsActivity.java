@@ -34,8 +34,7 @@ public class PlantsActivity extends ListActivity {
 			gardenId = getIntent().getIntExtra("GARDEN_ID", 0);
 		}
 		System.out.println("Plant gardenId=" + gardenId);
-		
-		
+
 		// Create a new DatabaseHelper
 		mDbHelperPlant = new DatabaseOpenHelperPlant(this);
 		// Get the underlying database for writing
@@ -44,8 +43,8 @@ public class PlantsActivity extends ListActivity {
 		Cursor c = readPlants();
 		System.out.println("c.getCount()=" + c.getCount());
 		mAdapter = new SimpleCursorAdapter(this, R.layout.list_plants, c,
-				DatabaseOpenHelperPlant.columns, new int[] { R.id._id,
-						R.id.plant_name }, 0);
+				DatabaseOpenHelperPlant.columns,
+				new int[] {  0, R.id.plant_name }, 0);
 
 		setListAdapter(mAdapter);
 
@@ -86,11 +85,11 @@ public class PlantsActivity extends ListActivity {
 	@Override
 	protected void onResume() {
 		System.out.println("PlantActivity onResume!");
-		if (mAdapter.getCount() ==0) {
+		if (mAdapter.getCount() == 0) {
 			Cursor c = readPlants();
 			System.out.println("c.getCount()=" + c.getCount());
 			mAdapter = new SimpleCursorAdapter(this, R.layout.list_plants, c,
-					DatabaseOpenHelperPlant.columns, new int[] { R.id._id,
+					DatabaseOpenHelperPlant.columns, new int[] { 0,
 							R.id.plant_name }, 0);
 
 			setListAdapter(mAdapter);
@@ -107,7 +106,7 @@ public class PlantsActivity extends ListActivity {
 	@Override
 	protected void onStop() {
 		System.out.println("PlantActivity onStop!");
-//		mDbHelperPlant.deleteDatabase();
+		// mDbHelperPlant.deleteDatabase();
 		super.onStop();
 	}
 
@@ -117,8 +116,8 @@ public class PlantsActivity extends ListActivity {
 		Cursor c = readPlants();
 		System.out.println("c.getCount()=" + c.getCount());
 		mAdapter = new SimpleCursorAdapter(this, R.layout.list_plants, c,
-				DatabaseOpenHelperPlant.columns, new int[] { R.id._id,
-						R.id.plant_name }, 0);
+				DatabaseOpenHelperPlant.columns,
+				new int[] { 0, R.id.plant_name }, 0);
 
 		setListAdapter(mAdapter);
 		super.onRestart();
@@ -128,7 +127,8 @@ public class PlantsActivity extends ListActivity {
 	private Cursor readPlants() {
 		System.out.println("gardenid=" + gardenId);
 		String whereClause = DatabaseOpenHelperPlant.GARDEN_ID + "= ?";
-		String[] whereArgs = new String[] { Integer.valueOf(gardenId).toString() };
+		String[] whereArgs = new String[] { Integer.valueOf(gardenId)
+				.toString() };
 		String orderBy = DatabaseOpenHelperPlant.PLANT_NAME;
 		return mDB.query(DatabaseOpenHelperPlant.TABLE_NAME,
 				DatabaseOpenHelperPlant.columns, whereClause, whereArgs, null,
@@ -141,12 +141,12 @@ public class PlantsActivity extends ListActivity {
 		mDB.close();
 		super.onDestroy();
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		Intent startActivity = new Intent(getApplicationContext(),
 				StartActivity.class);
 		startActivity(startActivity);
 	}
-	
+
 }
