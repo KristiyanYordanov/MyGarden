@@ -8,6 +8,8 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  
     <uses-permission android:name="android.permission.WAKE_LOCK" >
     </uses-permission>
 
@@ -24,16 +26,13 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+           
         </activity>
         <activity
             android:name="com.example.mygarden.GardensActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
+             
         </activity>
         <activity
             android:name="com.example.mygarden.AddGardenActivity"
@@ -54,6 +53,16 @@
             android:name="com.example.mygarden.ImageViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.example.mygarden.IndicateTouchLocationActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <receiver android:name="com.example.mygarden.receivers.NotificationPublisher" />

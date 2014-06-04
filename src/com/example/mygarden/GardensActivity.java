@@ -53,20 +53,16 @@ public class GardensActivity extends ListActivity {
 
 		final Button button = (Button) findViewById(R.id.add_garden);
 
-		final String ACTION = "com.example.android.receivers.NOTIFICATION_ALARM";
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// Intent addNewGardenIntent = new
-				// Intent(getApplicationContext(),
-				// AddGardenActivity.class);
-				// startActivity(addNewGardenIntent);
-				AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-				Intent intent = new Intent(ACTION);
-				PendingIntent alarmIntent = PendingIntent.getBroadcast(
-						getApplicationContext(), 0, intent, 0);
-				alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar
-						.getInstance().getTimeInMillis(), alarmIntent);
+//				Intent addNewGardenIntent = new Intent(getApplicationContext(),
+//						AddGardenActivity.class);
+//				startActivity(addNewGardenIntent);
+				
+				Intent addNewGardenIntent = new Intent(getApplicationContext(),
+						IndicateTouchLocationActivity.class);
+		startActivity(addNewGardenIntent);
 			}
 		});
 
@@ -82,12 +78,12 @@ public class GardensActivity extends ListActivity {
 				cursor.moveToPosition(position);
 				// get _ID of the selected row
 				int gardenId = cursor.getInt(0);
-				
+
 				Intent plantsActivity = new Intent(getApplicationContext(),
 						PlantsActivity.class);
 				plantsActivity.putExtra("GARDEN_ID", gardenId);
 				startActivity(plantsActivity);
-				
+
 				scheduleNotification(getNotification("5 second delay"), 5000);
 			}
 		});

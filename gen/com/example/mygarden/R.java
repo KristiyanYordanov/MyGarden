@@ -23,30 +23,39 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class drawable {
         public static final int black_background=0x7f020000;
-        public static final int exclamation_mark=0x7f020001;
-        public static final int garden=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
-        public static final int output_0=0x7f020004;
-        public static final int output_1=0x7f020005;
-        public static final int output_10=0x7f020006;
-        public static final int output_11=0x7f020007;
-        public static final int output_12=0x7f020008;
-        public static final int output_13=0x7f020009;
-        public static final int output_14=0x7f02000a;
-        public static final int output_15=0x7f02000b;
-        public static final int output_16=0x7f02000c;
-        public static final int output_17=0x7f02000d;
-        public static final int output_18=0x7f02000e;
-        public static final int output_2=0x7f02000f;
-        public static final int output_3=0x7f020010;
-        public static final int output_4=0x7f020011;
-        public static final int output_5=0x7f020012;
-        public static final int output_6=0x7f020013;
-        public static final int output_7=0x7f020014;
-        public static final int output_8=0x7f020015;
-        public static final int output_9=0x7f020016;
-        public static final int plant=0x7f020017;
-        public static final int view_animation=0x7f020018;
+        public static final int blue_flower=0x7f020001;
+        public static final int exclamation_mark=0x7f020002;
+        public static final int flower=0x7f020003;
+        public static final int flowernew=0x7f020004;
+        public static final int flowernewnew=0x7f020005;
+        public static final int garden=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
+        public static final int marker=0x7f020008;
+        public static final int messenger=0x7f020009;
+        public static final int output_0=0x7f02000a;
+        public static final int output_1=0x7f02000b;
+        public static final int output_10=0x7f02000c;
+        public static final int output_11=0x7f02000d;
+        public static final int output_12=0x7f02000e;
+        public static final int output_13=0x7f02000f;
+        public static final int output_14=0x7f020010;
+        public static final int output_15=0x7f020011;
+        public static final int output_16=0x7f020012;
+        public static final int output_17=0x7f020013;
+        public static final int output_18=0x7f020014;
+        public static final int output_2=0x7f020015;
+        public static final int output_3=0x7f020016;
+        public static final int output_4=0x7f020017;
+        public static final int output_5=0x7f020018;
+        public static final int output_6=0x7f020019;
+        public static final int output_7=0x7f02001a;
+        public static final int output_8=0x7f02001b;
+        public static final int output_9=0x7f02001c;
+        public static final int pink_flower=0x7f02001d;
+        public static final int plant=0x7f02001e;
+        public static final int pollen_flower=0x7f02001f;
+        public static final int red_flower=0x7f020020;
+        public static final int view_animation=0x7f020021;
     }
     public static final class id {
         public static final int add_garden=0x7f070003;
@@ -54,8 +63,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int add_plant_from_grid=0x7f070001;
         public static final int btnIntendS=0x7f07000e;
         public static final int countdown_frame=0x7f070016;
-        public static final int frame=0x7f070015;
-        public static final int gardenImage=0x7f070012;
+        public static final int frame=0x7f070012;
+        public static final int gardenImage=0x7f070013;
         public static final int garden_name=0x7f070005;
         public static final int garden_place=0x7f070007;
         public static final int garden_type=0x7f070009;
@@ -67,8 +76,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int lbl_plant_name=0x7f07000a;
         public static final int lbl_set_place=0x7f070006;
         public static final int lbl_set_type=0x7f070008;
-        public static final int name=0x7f070013;
-        public static final int plantImage=0x7f070014;
+        public static final int name=0x7f070014;
+        public static final int plantImage=0x7f070015;
         public static final int plant_flipper=0x7f070017;
         public static final int plant_name=0x7f07000b;
         public static final int plant_place=0x7f07000c;
@@ -83,11 +92,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int add_garden=0x7f030003;
         public static final int add_plant=0x7f030004;
         public static final int custom_toast=0x7f030005;
-        public static final int grid_plants=0x7f030006;
-        public static final int list_gardens=0x7f030007;
-        public static final int list_plants=0x7f030008;
-        public static final int main=0x7f030009;
-        public static final int plant_flipper=0x7f03000a;
+        public static final int draw=0x7f030006;
+        public static final int grid_plants=0x7f030007;
+        public static final int list_gardens=0x7f030008;
+        public static final int list_plants=0x7f030009;
+        public static final int main=0x7f03000a;
+        public static final int plant_flipper=0x7f03000b;
     }
     public static final class string {
         public static final int add_garden=0x7f040002;
