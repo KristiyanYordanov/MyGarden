@@ -1,7 +1,5 @@
 package com.example.mygarden;
 
-import java.util.Calendar;
-
 import android.app.AlarmManager;
 import android.app.ListActivity;
 import android.app.Notification;
@@ -16,6 +14,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -23,6 +26,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.example.mygarden.db.DatabaseOpenHelper;
 import com.example.mygarden.receivers.NotificationPublisher;
@@ -56,13 +60,10 @@ public class GardensActivity extends ListActivity {
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-//				Intent addNewGardenIntent = new Intent(getApplicationContext(),
-//						AddGardenActivity.class);
-//				startActivity(addNewGardenIntent);
-				
 				Intent addNewGardenIntent = new Intent(getApplicationContext(),
-						IndicateTouchLocationActivity.class);
-		startActivity(addNewGardenIntent);
+						AddGardenActivity.class);
+				startActivity(addNewGardenIntent);
+
 			}
 		});
 
@@ -209,6 +210,53 @@ public class GardensActivity extends ListActivity {
 			builder.setOnlyAlertOnce(true);
 
 			return builder.build();
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.top_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.flower_drawer:
+
+			Intent addNewGardenIntent = new Intent(getApplicationContext(),
+					FlowerDrawer.class);
+			startActivity(addNewGardenIntent);
+			return true;
+		case R.id.more_help:
+			Toast.makeText(getApplicationContext(), "you've been helped more",
+					Toast.LENGTH_SHORT).show();
+			return true;
+		case R.id.even_more_help:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.context_menu, menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.help_guide:
+			Toast.makeText(getApplicationContext(), "ContextMenu Shown",
+					Toast.LENGTH_SHORT).show();
+			return true;
+		default:
+			return false;
 		}
 	}
 

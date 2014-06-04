@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -32,7 +33,7 @@ import android.view.View.OnTouchListener;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-public class IndicateTouchLocationActivity extends Activity {
+public class FlowerDrawer extends Activity {
 
 	private static final int MIN_DXDY = 2;
 
@@ -300,7 +301,7 @@ public class IndicateTouchLocationActivity extends Activity {
 		mFrame.draw(canvas);
 
 		File file = new File(Environment.getExternalStorageDirectory()
-				+ "/sign.png");
+				+ "/sign"+new Date().toString());
 		OutputStream stream = null;
 		try {
 			file.createNewFile();

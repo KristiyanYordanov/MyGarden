@@ -32,7 +32,11 @@
             android:name="com.example.mygarden.GardensActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
-             
+              <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.example.mygarden.AddGardenActivity"
@@ -55,14 +59,10 @@
             android:label="@string/app_name" >
         </activity>
          <activity
-            android:name="com.example.mygarden.IndicateTouchLocationActivity"
+            android:name="com.example.mygarden.FlowerDrawer"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+           
         </activity>
 
         <receiver android:name="com.example.mygarden.receivers.NotificationPublisher" />
