@@ -25,6 +25,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.example.mygarden.db.DatabaseOpenHelper;
+import com.example.mygarden.receivers.NotificationPublisher;
 
 public class GardensActivity extends ListActivity {
 
@@ -81,14 +82,13 @@ public class GardensActivity extends ListActivity {
 				cursor.moveToPosition(position);
 				// get _ID of the selected row
 				int gardenId = cursor.getInt(0);
-				// Toast.makeText(getApplicationContext(),
-				// "List View Clicked:" + gardenId, Toast.LENGTH_LONG)
-				// .show();
-				System.out.println("start not");
+				
+				Intent plantsActivity = new Intent(getApplicationContext(),
+						PlantsActivity.class);
+				plantsActivity.putExtra("GARDEN_ID", gardenId);
+				startActivity(plantsActivity);
+				
 				scheduleNotification(getNotification("5 second delay"), 5000);
-				// sendBroadcast(new Intent(getApplicationContext(),
-				// AlarmBroadcastReceiver.class));
-
 			}
 		});
 

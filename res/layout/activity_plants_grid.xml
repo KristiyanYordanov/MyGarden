@@ -9,10 +9,14 @@
         android:id="@+id/gridview"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:horizontalSpacing="0dp"
+        android:numColumns="2"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="0dp" />
 
     <Button
-        android:id="@+id/add_plant"
+        android:id="@+id/add_plant_from_grid"
         style="?metaButtonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

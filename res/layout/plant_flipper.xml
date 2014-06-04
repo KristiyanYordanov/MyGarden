@@ -7,17 +7,16 @@
 
     <include
         android:id="@+id/include2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         layout="@layout/activity_plants_list" >
     </include>
 
     <include
         android:id="@+id/include1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         layout="@layout/activity_plants_grid" >
     </include>
 

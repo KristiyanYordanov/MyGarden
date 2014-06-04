@@ -1,4 +1,4 @@
-package com.example.mygarden;
+package com.example.mygarden.receivers;
 
 import android.app.Notification;
 import android.app.NotificationManager;

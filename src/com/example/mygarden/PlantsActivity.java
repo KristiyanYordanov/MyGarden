@@ -21,11 +21,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.example.mygarden.customadapters.ImageAdapter;
 import com.example.mygarden.db.DatabaseOpenHelperPlant;
 
 public class PlantsActivity extends ListActivity {
@@ -54,6 +56,8 @@ public class PlantsActivity extends ListActivity {
 	private DatabaseOpenHelperPlant mDbHelperPlant;
 	private SimpleCursorAdapter mAdapter;
 	int gardenId;
+	GridView gridview;
+	View.OnTouchListener gestureListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,22 +76,14 @@ public class PlantsActivity extends ListActivity {
 
 		final GestureDetector gestureDetector = new GestureDetector(this,
 				new MyGestureDetector());
-		View.OnTouchListener gestureListener = new View.OnTouchListener() {
+
+		gestureListener = new View.OnTouchListener() {
 			public boolean onTouch(View v, MotionEvent event) {
 				return gestureDetector.onTouchEvent(event);
 			}
 		};
-		
-		System.out.println("moreRight=" +moreRight);
-		if (moreRight) {
-			System.out.println("in the moreRight");
-			getListView().setOnTouchListener(gestureListener);
-		}
-		else {
-			System.out.println("in the moreLeft");
-			getListView().setOnTouchListener(gestureListener);
-		}
-		
+
+		getListView().setOnTouchListener(gestureListener);
 
 	}
 
@@ -112,7 +108,7 @@ public class PlantsActivity extends ListActivity {
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 				float velocityY) {
 			try {
-
+				System.out.println("Moved");
 				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
 
 					return false;
@@ -121,16 +117,20 @@ public class PlantsActivity extends ListActivity {
 				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 					if (moreRight) {
+						System.out.println("moreRight");
 						moreLeft = true;
 						moreRight = false;
 						switchLayoutStateTo(grid);
+						gridview.setOnTouchListener(gestureListener);
 
 					}
 				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-
+					System.out.println("moreLeft111");
 					if (moreLeft) {
+
 						switchLayoutStateTo(list);
+						getListView().setOnTouchListener(gestureListener);
 						moreLeft = false;
 						moreRight = true;
 					}
@@ -220,13 +220,14 @@ public class PlantsActivity extends ListActivity {
 	}
 
 	public void switchLayoutStateTo(int switchTo) {
-		if (null != mFlipper) {
-			mFlipper.setInAnimation(inFromRightAnimation());
-			mFlipper.setOutAnimation(outToLeftAnimation());
-
-		}
 
 		if (switchTo == 0) {
+			if (null != mFlipper) {
+
+				mFlipper.setInAnimation(inFromLeftAnimation());
+				mFlipper.setOutAnimation(outToRightAnimation());
+
+			}
 			// Create a new DatabaseHelper
 			mDbHelperPlant = new DatabaseOpenHelperPlant(this);
 			// Get the underlying database for writing
@@ -271,8 +272,12 @@ public class PlantsActivity extends ListActivity {
 				}
 			});
 		} else {
-			GridView gridview = (GridView) findViewById(R.id.gridview);
+			if (null != mFlipper) {
+				mFlipper.setInAnimation(inFromRightAnimation());
+				mFlipper.setOutAnimation(outToLeftAnimation());
 
+			}
+			gridview = (GridView) findViewById(R.id.gridview);
 			gridview.setAdapter(new ImageAdapter(this, mThumbIdsFlowers));
 
 			gridview.setOnItemClickListener(new OnItemClickListener() {
@@ -282,6 +287,17 @@ public class PlantsActivity extends ListActivity {
 							ImageViewActivity.class);
 					intent.putExtra(EXTRA_RES_ID, (int) id);
 					startActivity(intent);
+				}
+			});
+			final Button button = (Button) findViewById(R.id.add_plant_from_grid);
+
+			button.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent addPlantActivity = new Intent(
+							getApplicationContext(), AddPlantActivity.class);
+					addPlantActivity.putExtra("GARDEN_ID", gardenId);
+					startActivity(addPlantActivity);
 				}
 			});
 		}
@@ -306,6 +322,28 @@ public class PlantsActivity extends ListActivity {
 		Animation outtoLeft = new TranslateAnimation(
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, -1.0f,
+				Animation.RELATIVE_TO_PARENT, 0.0f,
+				Animation.RELATIVE_TO_PARENT, 0.0f);
+		outtoLeft.setDuration(500);
+		outtoLeft.setInterpolator(new LinearInterpolator());
+		return outtoLeft;
+	}
+
+	private Animation inFromLeftAnimation() {
+		Animation inFromRight = new TranslateAnimation(
+				Animation.RELATIVE_TO_PARENT, -1.0f,
+				Animation.RELATIVE_TO_PARENT, 0.0f,
+				Animation.RELATIVE_TO_PARENT, 0.0f,
+				Animation.RELATIVE_TO_PARENT, 0.0f);
+		inFromRight.setDuration(500);
+		inFromRight.setInterpolator(new LinearInterpolator());
+		return inFromRight;
+	}
+
+	private Animation outToRightAnimation() {
+		Animation outtoLeft = new TranslateAnimation(
+				Animation.RELATIVE_TO_PARENT, 0.0f,
+				Animation.RELATIVE_TO_PARENT, 1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
 		outtoLeft.setDuration(500);

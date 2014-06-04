@@ -49,31 +49,32 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int view_animation=0x7f020018;
     }
     public static final class id {
-        public static final int add_garden=0x7f070002;
-        public static final int add_plant=0x7f070001;
-        public static final int btnIntendS=0x7f07000d;
-        public static final int countdown_frame=0x7f070015;
-        public static final int frame=0x7f070014;
-        public static final int gardenImage=0x7f070011;
-        public static final int garden_name=0x7f070004;
-        public static final int garden_place=0x7f070006;
-        public static final int garden_type=0x7f070008;
+        public static final int add_garden=0x7f070003;
+        public static final int add_plant=0x7f070002;
+        public static final int add_plant_from_grid=0x7f070001;
+        public static final int btnIntendS=0x7f07000e;
+        public static final int countdown_frame=0x7f070016;
+        public static final int frame=0x7f070015;
+        public static final int gardenImage=0x7f070012;
+        public static final int garden_name=0x7f070005;
+        public static final int garden_place=0x7f070007;
+        public static final int garden_type=0x7f070009;
         public static final int gridview=0x7f070000;
-        public static final int image=0x7f07000f;
-        public static final int include1=0x7f070018;
-        public static final int include2=0x7f070017;
-        public static final int lbl_garden_name=0x7f070003;
-        public static final int lbl_plant_name=0x7f070009;
-        public static final int lbl_set_place=0x7f070005;
-        public static final int lbl_set_type=0x7f070007;
-        public static final int name=0x7f070012;
-        public static final int plantImage=0x7f070013;
-        public static final int plant_flipper=0x7f070016;
-        public static final int plant_name=0x7f07000a;
-        public static final int plant_place=0x7f07000b;
-        public static final int plant_type=0x7f07000c;
-        public static final int text=0x7f070010;
-        public static final int toast_layout_root=0x7f07000e;
+        public static final int image=0x7f070010;
+        public static final int include1=0x7f070019;
+        public static final int include2=0x7f070018;
+        public static final int lbl_garden_name=0x7f070004;
+        public static final int lbl_plant_name=0x7f07000a;
+        public static final int lbl_set_place=0x7f070006;
+        public static final int lbl_set_type=0x7f070008;
+        public static final int name=0x7f070013;
+        public static final int plantImage=0x7f070014;
+        public static final int plant_flipper=0x7f070017;
+        public static final int plant_name=0x7f07000b;
+        public static final int plant_place=0x7f07000c;
+        public static final int plant_type=0x7f07000d;
+        public static final int text=0x7f070011;
+        public static final int toast_layout_root=0x7f07000f;
     }
     public static final class layout {
         public static final int activity_plants_grid=0x7f030000;

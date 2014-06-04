@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
 
-public class GraphicsFrameAnimationActivity extends Activity {
+public class StartAnimationActivity extends Activity {
 	private AnimationDrawable mAnim;
 
 	@Override

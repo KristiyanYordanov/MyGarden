@@ -7,7 +7,9 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"></uses-permission>
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" >
+    </uses-permission>
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -18,7 +20,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name="com.example.mygarden.GraphicsFrameAnimationActivity"
+            android:name="com.example.mygarden.StartAnimationActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme" >
@@ -48,8 +50,13 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name" >
         </activity>
- <receiver android:name="com.example.mygarden.NotificationPublisher" />
-      <receiver  android:process=":remote" android:name="com.example.mygarden.AlarmBroadcastReceiver"></receiver>
+        <activity
+            android:name="com.example.mygarden.ImageViewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name" >
+        </activity>
+
+        <receiver android:name="com.example.mygarden.receivers.NotificationPublisher" />
     </application>
 
 </manifest>
