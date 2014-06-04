@@ -1,5 +1,6 @@
 package com.example.mygarden;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -9,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,42 +70,77 @@ public class PlantsActivity extends ListActivity {
 		moreRight = true;
 		mFlipper = (ViewFlipper) findViewById(R.id.plant_flipper);
 
-		mGestureDetector = new GestureDetector(this,
-				new GestureDetector.SimpleOnGestureListener() {
-					@Override
-					public boolean onFling(MotionEvent e1, MotionEvent e2,
-							float velocityX, float velocityY) {
-						try {
+		final GestureDetector gestureDetector = new GestureDetector(this,
+				new MyGestureDetector());
+		View.OnTouchListener gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				return gestureDetector.onTouchEvent(event);
+			}
+		};
+		
+		System.out.println("moreRight=" +moreRight);
+		if (moreRight) {
+			System.out.println("in the moreRight");
+			getListView().setOnTouchListener(gestureListener);
+		}
+		else {
+			System.out.println("in the moreLeft");
+			getListView().setOnTouchListener(gestureListener);
+		}
+		
 
-							if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
+	}
 
-								return false;
-							}
+	private void myOnItemClick(int position) {
+		String str = MessageFormat
+				.format("Item clicked = {0,number}", position);
+		Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+	}
 
-							if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-									&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-								if (moreRight) {
-									moreLeft = true;
-									moreRight = false;
-									switchLayoutStateTo(grid);
+	class MyGestureDetector extends SimpleOnGestureListener {
 
-								}
-							} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-									&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+		// Detect a single-click and call my own handler.
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+			ListView lv = getListView();
+			int pos = lv.pointToPosition((int) e.getX(), (int) e.getY());
+			myOnItemClick(pos);
+			return false;
+		}
 
-								if (moreLeft) {
-									switchLayoutStateTo(list);
-									moreLeft = false;
-									moreRight = true;
-								}
-							}
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+				float velocityY) {
+			try {
 
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						return false;
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
+
+					return false;
+				}
+
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					if (moreRight) {
+						moreLeft = true;
+						moreRight = false;
+						switchLayoutStateTo(grid);
+
 					}
-				});
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+
+					if (moreLeft) {
+						switchLayoutStateTo(list);
+						moreLeft = false;
+						moreRight = true;
+					}
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
 
 	}
 

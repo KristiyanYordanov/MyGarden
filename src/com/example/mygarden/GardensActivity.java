@@ -1,12 +1,21 @@
 package com.example.mygarden;
 
+import java.util.Calendar;
+
+import android.app.AlarmManager;
 import android.app.ListActivity;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -43,12 +52,20 @@ public class GardensActivity extends ListActivity {
 
 		final Button button = (Button) findViewById(R.id.add_garden);
 
+		final String ACTION = "com.example.android.receivers.NOTIFICATION_ALARM";
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent addNewGardenIntent = new Intent(getApplicationContext(),
-						AddGardenActivity.class);
-				startActivity(addNewGardenIntent);
+				// Intent addNewGardenIntent = new
+				// Intent(getApplicationContext(),
+				// AddGardenActivity.class);
+				// startActivity(addNewGardenIntent);
+				AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+				Intent intent = new Intent(ACTION);
+				PendingIntent alarmIntent = PendingIntent.getBroadcast(
+						getApplicationContext(), 0, intent, 0);
+				alarmManager.set(AlarmManager.RTC_WAKEUP, Calendar
+						.getInstance().getTimeInMillis(), alarmIntent);
 			}
 		});
 
@@ -67,11 +84,10 @@ public class GardensActivity extends ListActivity {
 				// Toast.makeText(getApplicationContext(),
 				// "List View Clicked:" + gardenId, Toast.LENGTH_LONG)
 				// .show();
-
-				Intent plantsActivity = new Intent(getApplicationContext(),
-						PlantsActivity.class);
-				plantsActivity.putExtra("GARDEN_ID", gardenId);
-				startActivity(plantsActivity);
+				System.out.println("start not");
+				scheduleNotification(getNotification("5 second delay"), 5000);
+				// sendBroadcast(new Intent(getApplicationContext(),
+				// AlarmBroadcastReceiver.class));
 
 			}
 		});
@@ -160,4 +176,44 @@ public class GardensActivity extends ListActivity {
 		exitIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(exitIntent);
 	}
+
+	private void scheduleNotification(Notification notification, int delay) {
+
+		Intent notificationIntent = new Intent(this,
+				NotificationPublisher.class);
+		notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+		notificationIntent.putExtra(NotificationPublisher.NOTIFICATION,
+				notification);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
+				notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		long futureInMillis = SystemClock.elapsedRealtime() + delay;
+		AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis,
+				pendingIntent);
+	}
+
+	private Notification getNotification(String content) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			System.out.println("Jelly bean");
+			Notification.Builder builder = new Notification.Builder(this);
+			builder.setContentTitle("Watering the plants");
+			builder.setContentText(content);
+			builder.setSmallIcon(R.drawable.ic_launcher);
+			builder.setOnlyAlertOnce(true);
+
+			return builder.build();
+		} else {
+			System.out.println("ice cream");
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(
+					this);
+			builder.setContentTitle("Watering the plants");
+			builder.setContentText(content);
+			builder.setSmallIcon(R.drawable.ic_launcher);
+			builder.setOnlyAlertOnce(true);
+
+			return builder.build();
+		}
+	}
+
 }
