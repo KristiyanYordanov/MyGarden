@@ -10,9 +10,10 @@ public class DatabaseOpenHelperPlant extends SQLiteOpenHelper {
 	public final static String PLANT_NAME = "plant_name";
 	public final static String PLANT_PLACE = "plant_place";
 	public final static String PLANT_TYPE = "plant_type";
+	public final static String PLANT_IMAGE = "plant_image";
 	public final static String GARDEN_ID = "garden_id";
 	public final static String _ID = "_id";
-	public  final static String[] columns = { _ID, PLANT_NAME, PLANT_PLACE, PLANT_TYPE, GARDEN_ID  };
+	public  final static String[] columns = { _ID, PLANT_NAME, PLANT_PLACE, PLANT_TYPE, PLANT_IMAGE, GARDEN_ID  };
 
 	final private static String CREATE_CMD =
 
@@ -21,6 +22,7 @@ public class DatabaseOpenHelperPlant extends SQLiteOpenHelper {
 			+ PLANT_NAME + " TEXT NOT NULL,"
 			+ PLANT_PLACE + " TEXT, "
 			+ PLANT_TYPE + " TEXT, "
+			+ PLANT_IMAGE + " BLOB, "
 			+ GARDEN_ID + " INTEGER, "
 			+ "FOREIGN KEY(" + GARDEN_ID  + ") REFERENCES "
 			+ DatabaseOpenHelper.TABLE_NAME + "(" + DatabaseOpenHelper._ID + ")"
@@ -33,6 +35,7 @@ public class DatabaseOpenHelperPlant extends SQLiteOpenHelper {
 	public DatabaseOpenHelperPlant(Context context) {
 		super(context, NAME, null, VERSION);
 		this.mContext = context;
+		//mContext.deleteDatabase(NAME);
 	}
 
 	@Override

@@ -68,7 +68,7 @@ public class PlantsActivity extends ListActivity {
 		if (extras != null) {
 			gardenId = getIntent().getIntExtra("GARDEN_ID", 0);
 		}
-
+	
 		switchLayoutStateTo(list);
 		moreRight = true;
 		mFlipper = (ViewFlipper) findViewById(R.id.plant_flipper);
@@ -170,7 +170,7 @@ public class PlantsActivity extends ListActivity {
 	@Override
 	protected void onStop() {
 		System.out.println("PlantActivity onStop!");
-		// mDbHelperPlant.deleteDatabase();
+		//mDbHelperPlant.deleteDatabase();
 		super.onStop();
 	}
 
@@ -233,7 +233,6 @@ public class PlantsActivity extends ListActivity {
 			mDB = mDbHelperPlant.getWritableDatabase();
 			// Create a cursor
 			Cursor c = readPlants();
-
 			mAdapter = new SimpleCursorAdapter(this, R.layout.list_plants, c,
 					DatabaseOpenHelperPlant.columns, new int[] { 0,
 							R.id.plant_name }, 0);

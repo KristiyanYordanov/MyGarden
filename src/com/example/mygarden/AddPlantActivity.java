@@ -1,5 +1,6 @@
 package com.example.mygarden;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -15,7 +16,6 @@ import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,112 +27,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.mygarden.camera.AlbumStorageDirFactory;
 import com.example.mygarden.camera.BaseAlbumDirFactory;
-import com.example.mygarden.camera.FroyoAlbumDirFactory;
 import com.example.mygarden.db.DatabaseOpenHelperPlant;
 
 public class AddPlantActivity extends Activity {
 
-	private static final int ACTION_TAKE_PHOTO_S = 2;
-	private static final String BITMAP_STORAGE_KEY = "viewbitmap";
-	private static final String IMAGEVIEW_VISIBILITY_STORAGE_KEY = "imageviewvisibility";
-	private Bitmap mImageBitmap;
-	@SuppressWarnings("unused")
-	private String mCurrentPhotoPath;
-	private static final String JPEG_FILE_PREFIX = "IMG_";
-	private static final String JPEG_FILE_SUFFIX = ".jpg";
-	private AlbumStorageDirFactory mAlbumStorageDirFactory = null;
+	static final int REQUEST_IMAGE_CAPTURE = 1;
+	Bitmap mImageBitmap;
 
-	/* Photo album for this application */
-	private String getAlbumName() {
-		return getString(R.string.album_name);
-	}
-
-	private File getAlbumDir() {
-		File storageDir = null;
-
-		if (Environment.MEDIA_MOUNTED.equals(Environment
-				.getExternalStorageState())) {
-
-			storageDir = mAlbumStorageDirFactory
-					.getAlbumStorageDir(getAlbumName());
-
-			if (storageDir != null) {
-				if (!storageDir.mkdirs()) {
-					if (!storageDir.exists()) {
-						Log.d("CameraSample", "failed to create directory");
-						return null;
-					}
-				}
-			}
-
-		} else {
-			Log.v(getString(R.string.app_name),
-					"External storage is not mounted READ/WRITE.");
-		}
-
-		return storageDir;
-	}
-
-	private File createImageFile() throws IOException {
-		// Create an image file name
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-				.format(new Date());
-		String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
-		File albumF = getAlbumDir();
-		File imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX,
-				albumF);
-		return imageF;
-	}
-
-	private File setUpPhotoFile() throws IOException {
-
-		File f = createImageFile();
-		mCurrentPhotoPath = f.getAbsolutePath();
-
-		return f;
-	}
-
-	private void dispatchTakePictureIntent(int actionCode) {
-
-		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-		switch (actionCode) {
-		case ACTION_TAKE_PHOTO_S:
-			File f = null;
-
-			try {
-				f = setUpPhotoFile();
-				mCurrentPhotoPath = f.getAbsolutePath();
-				takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-						Uri.fromFile(f));
-			} catch (IOException e) {
-				e.printStackTrace();
-				f = null;
-				mCurrentPhotoPath = null;
-			}
-			break;
-
-		default:
-			break;
-		} // switch
-
-		startActivityForResult(takePictureIntent, actionCode);
-	}
-
-	private void handleSmallCameraPhoto(Intent intent) {
-		Bundle extras = intent.getExtras();
-		mImageBitmap = (Bitmap) extras.get("data");
-	}
-
-	Button.OnClickListener mTakePicSOnClickListener = new Button.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			dispatchTakePictureIntent(ACTION_TAKE_PHOTO_S);
-		}
-	};
-	// end camera fields and methods
 	private SQLiteDatabase mDB = null;
 	private DatabaseOpenHelperPlant mDbHelper;
 	int gardenId;
@@ -156,15 +58,17 @@ public class AddPlantActivity extends Activity {
 
 		mImageBitmap = null;
 
-		Button picSBtn = (Button) findViewById(R.id.btnIntendS);
-		setBtnListenerOrDisable(picSBtn, mTakePicSOnClickListener,
-				MediaStore.ACTION_IMAGE_CAPTURE);
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-			mAlbumStorageDirFactory = new FroyoAlbumDirFactory();
-		} else {
-			mAlbumStorageDirFactory = new BaseAlbumDirFactory();
-		}
+		Button takePictureButton = (Button) findViewById(R.id.btnIntendS);
+		
+		takePictureButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+				    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+				        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+				    }
+			}
+		});
 
 		addGarden.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -192,7 +96,12 @@ public class AddPlantActivity extends Activity {
 						values.put(DatabaseOpenHelperPlant.PLANT_TYPE, type
 								.getText().toString());
 					}
-
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					mImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
+					byte[] bArray = bos.toByteArray();
+					// Bitmap bm = BitmapFactory.decodeByteArray(bArray, 0
+					// ,bArray.length);
+					values.put(DatabaseOpenHelperPlant.PLANT_IMAGE, bArray);
 					values.put(DatabaseOpenHelperPlant.GARDEN_ID, gardenId);
 					mDB.insert(DatabaseOpenHelperPlant.TABLE_NAME, null, values);
 
@@ -207,68 +116,12 @@ public class AddPlantActivity extends Activity {
 		});
 
 	}
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-
-		case ACTION_TAKE_PHOTO_S: {
-			if (resultCode == RESULT_OK) {
-				handleSmallCameraPhoto(data);
-			}
-			break;
-		} // ACTION_TAKE_PHOTO_S
-
-		} // switch
-	}
-
-	// Some lifecycle callbacks so that the image can survive orientation change
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		outState.putParcelable(BITMAP_STORAGE_KEY, mImageBitmap);
-		outState.putBoolean(IMAGEVIEW_VISIBILITY_STORAGE_KEY,
-				(mImageBitmap != null));
-		super.onSaveInstanceState(outState);
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		mImageBitmap = savedInstanceState.getParcelable(BITMAP_STORAGE_KEY);
-	}
-
-	/**
-	 * Indicates whether the specified action can be used as an intent. This
-	 * method queries the package manager for installed packages that can
-	 * respond to an intent with the specified action. If no suitable package is
-	 * found, this method returns false.
-	 * http://android-developers.blogspot.com/2009/01/can-i-use-this-intent.html
-	 * 
-	 * @param context
-	 *            The application's environment.
-	 * @param action
-	 *            The Intent action to check for availability.
-	 * 
-	 * @return True if an Intent with the specified action can be sent and
-	 *         responded to, false otherwise.
-	 */
-	public static boolean isIntentAvailable(Context context, String action) {
-		final PackageManager packageManager = context.getPackageManager();
-		final Intent intent = new Intent(action);
-		List<ResolveInfo> list = packageManager.queryIntentActivities(intent,
-				PackageManager.MATCH_DEFAULT_ONLY);
-		return list.size() > 0;
-	}
-
-	private void setBtnListenerOrDisable(Button btn,
-			Button.OnClickListener onClickListener, String intentName) {
-		if (isIntentAvailable(this, intentName)) {
-			btn.setOnClickListener(onClickListener);
-		} else {
-			btn.setText(getText(R.string.cannot).toString() + " "
-					+ btn.getText());
-			btn.setClickable(false);
-		}
+	    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+	        Bundle extras = data.getExtras();
+	        mImageBitmap = (Bitmap) extras.get("data");
+	    }
 	}
 
 }
