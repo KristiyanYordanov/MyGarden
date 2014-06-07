@@ -12,10 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/plantImage_desc"
-        android:src="@drawable/plant" />
+        />
 
     <TextView
-        android:id="@+id/plant_name"
+        android:id="@+id/plantName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"

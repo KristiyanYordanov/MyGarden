@@ -1,25 +1,16 @@
 package com.example.mygarden;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.net.Uri;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.mygarden.camera.BaseAlbumDirFactory;
 import com.example.mygarden.db.DatabaseOpenHelperPlant;
 
 public class AddPlantActivity extends Activity {
@@ -96,13 +86,17 @@ public class AddPlantActivity extends Activity {
 						values.put(DatabaseOpenHelperPlant.PLANT_TYPE, type
 								.getText().toString());
 					}
-					ByteArrayOutputStream bos = new ByteArrayOutputStream();
-					mImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, bos);
-					byte[] bArray = bos.toByteArray();
+					if (null != mImageBitmap) {
+						byte[] byteArray =ConvertDrawableToByteArray(mImageBitmap);
+						System.out.println("byteArray="+byteArray);
+						values.put(DatabaseOpenHelperPlant.PLANT_IMAGE, byteArray);
+					}
+				
 					// Bitmap bm = BitmapFactory.decodeByteArray(bArray, 0
 					// ,bArray.length);
-					values.put(DatabaseOpenHelperPlant.PLANT_IMAGE, bArray);
+					
 					values.put(DatabaseOpenHelperPlant.GARDEN_ID, gardenId);
+					System.out.println("values="+values.toString());
 					mDB.insert(DatabaseOpenHelperPlant.TABLE_NAME, null, values);
 
 					values.clear();
@@ -121,7 +115,14 @@ public class AddPlantActivity extends Activity {
 	    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 	        Bundle extras = data.getExtras();
 	        mImageBitmap = (Bitmap) extras.get("data");
+	        System.out.println("mImageBitmap="+mImageBitmap);
 	    }
+	}
+	public static byte[] ConvertDrawableToByteArray(Bitmap imageBitmap) {
+	    ByteArrayOutputStream imageByteStream = new ByteArrayOutputStream();
+	    imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, imageByteStream);
+	    byte[] imageByteData = imageByteStream.toByteArray();
+	    return imageByteData;
 	}
 
 }
