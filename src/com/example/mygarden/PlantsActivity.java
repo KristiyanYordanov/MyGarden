@@ -9,10 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -25,9 +22,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -37,14 +32,10 @@ import com.example.mygarden.customadapters.PlantListImageAdapter;
 import com.example.mygarden.db.DatabaseOpenHelperPlant;
 
 public class PlantsActivity extends Activity {
-	ArrayList<Plant> imageArry = new ArrayList<Plant>();
-	PlantListImageAdapter adapter;
 
 	private static final int SWIPE_MIN_DISTANCE = 120;
 	private static final int SWIPE_MAX_OFF_PATH = 250;
 	private static final int SWIPE_THRESHOLD_VELOCITY = 100;
-	ImageView mImageView;
-
 	private ArrayList<Integer> mThumbIdsFlowers = new ArrayList<Integer>(
 			Arrays.asList(R.drawable.output_0, R.drawable.output_0,
 					R.drawable.output_0, R.drawable.output_0,
@@ -53,27 +44,30 @@ public class PlantsActivity extends Activity {
 					R.drawable.output_0, R.drawable.output_0,
 					R.drawable.output_0, R.drawable.output_0));
 
+	private PlantListImageAdapter adapter;
 	protected static final String EXTRA_RES_ID = "POS";
+
 	private ViewFlipper mFlipper;
 	private GestureDetector mGestureDetector;
-	int list = 0;
-	int grid = 1;
-	boolean moreLeft = false;
-	boolean moreRight = false;
+	private boolean moreLeft = false;
+	private boolean moreRight = false;
 
 	private SQLiteDatabase mDB = null;
 	private DatabaseOpenHelperPlant mDbHelperPlant;
-	private SimpleCursorAdapter mAdapter;
-	int gardenId;
-	GridView gridview;
-	View.OnTouchListener gestureListener;
-	Button button = null;
+	private int gardenId;
+	private GridView gridview;
+	private ListView listView;
+	private View.OnTouchListener gestureListener;
+	private Button button = null;
+	private Animation animation;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.plant_flipper);
 		System.out.println("PlantActivity onCreate!");
 		button = (Button) findViewById(R.id.add_plant);
+		listView = (ListView) findViewById(R.id.list);
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			gardenId = getIntent().getIntExtra("GARDEN_ID", 0);
@@ -82,44 +76,20 @@ public class PlantsActivity extends Activity {
 		mDbHelperPlant = new DatabaseOpenHelperPlant(this);
 		// Get the underlying database for writing
 		mDB = mDbHelperPlant.getWritableDatabase();
-
-		mImageView = (ImageView) findViewById(R.id.plantImage);
-		// switchLayoutStateTo(list);
+		list();
 		moreRight = true;
 		mFlipper = (ViewFlipper) findViewById(R.id.plant_flipper);
 
 		final GestureDetector gestureDetector = new GestureDetector(this,
 				new MyGestureDetector());
 
-		// gestureListener = new View.OnTouchListener() {
-		// public boolean onTouch(View v, MotionEvent event) {
-		// return gestureDetector.onTouchEvent(event);
-		// }
-		// };
-		//
-		// getListView().setOnTouchListener(gestureListener);
-
-		// Reading all plants from database
-		List<Plant> plants = mDbHelperPlant.getPlatsById(gardenId);
-		for (Plant cn : plants) {
-			// add plants data in arrayList
-			imageArry.add(cn);
-		}
-		adapter = new PlantListImageAdapter(this,
-				R.layout.list_plants, imageArry);
-		ListView dataList = (ListView) findViewById(R.id.list);
-		dataList.setAdapter(adapter);
-		
-
-		button.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent addPlantActivity = new Intent(
-						getApplicationContext(), AddPlantActivity.class);
-				addPlantActivity.putExtra("GARDEN_ID", gardenId);
-				startActivity(addPlantActivity);
+		gestureListener = new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				return gestureDetector.onTouchEvent(event);
 			}
-		});
+		};
+
+		listView.setOnTouchListener(gestureListener);
 
 	}
 
@@ -154,18 +124,18 @@ public class PlantsActivity extends Activity {
 					if (moreRight) {
 						moreLeft = true;
 						moreRight = false;
-						switchLayoutStateTo(grid);
+						switchLayoutStateTo(moreLeft);
 						gridview.setOnTouchListener(gestureListener);
 
 					}
 				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
 						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 					if (moreLeft) {
-
-						switchLayoutStateTo(list);
-						// getListView().setOnTouchListener(gestureListener);
 						moreLeft = false;
 						moreRight = true;
+						switchLayoutStateTo(moreLeft);
+						listView.setOnTouchListener(gestureListener);
+						
 					}
 				}
 
@@ -179,18 +149,7 @@ public class PlantsActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-//		System.out.println("PlantActivity onResume!");
-//		if (null != mAdapter) {
-//			if (mAdapter.getCount() == 0) {
-//				Cursor c = readPlants();
-//				mAdapter = new SimpleCursorAdapter(this, R.layout.list_plants,
-//						c, DatabaseOpenHelperPlant.columns, new int[] {
-//								R.id.plantImage, R.id.plant_name }, 0);
-//
-//				// setListAdapter(mAdapter);
-//			}
-//		}
-//
+		System.out.println("PlantActivity onResume!");
 		super.onResume();
 	}
 
@@ -203,33 +162,14 @@ public class PlantsActivity extends Activity {
 	@Override
 	protected void onStop() {
 		System.out.println("PlantActivity onStop!");
-		// mDbHelperPlant.deleteDatabase();
 		super.onStop();
 	}
 
 	@Override
 	protected void onRestart() {
-//		System.out.println("PlantActivity onRestart!");
-//		Cursor c = readPlants();
-//
-//		mAdapter = new SimpleCursorAdapter(this, R.layout.list_plants, c,
-//				DatabaseOpenHelperPlant.columns, new int[] { R.id.plantImage,
-//						R.id.plant_name }, 0);
-
-		// setListAdapter(mAdapter);
+		System.out.println("PlantActivity onRestart!");
+		list();
 		super.onRestart();
-	}
-
-	// Returns all artist records in the database
-	private Cursor readPlants() {
-
-		String whereClause = DatabaseOpenHelperPlant.GARDEN_ID + "= ?";
-		String[] whereArgs = new String[] { Integer.valueOf(gardenId)
-				.toString() };
-		String orderBy = DatabaseOpenHelperPlant.PLANT_NAME;
-		return mDB.query(DatabaseOpenHelperPlant.TABLE_NAME,
-				DatabaseOpenHelperPlant.columns, whereClause, whereArgs, null,
-				null, orderBy);
 	}
 
 	// Close database
@@ -251,97 +191,25 @@ public class PlantsActivity extends Activity {
 		return mGestureDetector.onTouchEvent(event);
 	}
 
-	public void switchLayoutStateTo(int switchTo) {
+	public void switchLayoutStateTo(boolean moreRight) {
 
-		if (switchTo == 0) {
-			if (null != mFlipper) {
-
-				mFlipper.setInAnimation(inFromLeftAnimation());
-				mFlipper.setOutAnimation(outToRightAnimation());
-
-			}
-
-			// Create a cursor
-			Cursor c = readPlants();
-			mAdapter = new SimpleCursorAdapter(this, R.layout.list_plants, c,
-					DatabaseOpenHelperPlant.columns, new int[] { 0,
-							R.id.plant_name }, 0);
-
-			while (c.moveToNext()) {
-				byte[] bArray = c.getBlob(4);
-				System.out.println("b=" + bArray);
-				if (null != bArray) {
-					Bitmap bm = BitmapFactory.decodeByteArray(bArray, 0,
-							bArray.length);
-					System.out.println("bm=" + bm);
-					System.out.println("mImageView=" + mImageView);
-					// mImageView.setImageBitmap(bm);
-				}
-
-			}
-
-			// setListAdapter(mAdapter);
-
-		
-
-			button.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent addPlantActivity = new Intent(
-							getApplicationContext(), AddPlantActivity.class);
-					addPlantActivity.putExtra("GARDEN_ID", gardenId);
-					startActivity(addPlantActivity);
-				}
-			});
-
-			ListView catlist;
-			// catlist = getListView();
-			// catlist.setOnItemClickListener(new OnItemClickListener() {
-			//
-			// @Override
-			// public void onItemClick(AdapterView<?> parent, View v,
-			// final int position, long id) {
-			//
-			// Toast.makeText(getApplicationContext(),
-			// "List View Clicked:" + position, Toast.LENGTH_LONG)
-			// .show();
-			// Intent plantActivity = new Intent(getApplicationContext(),
-			// PlantsActivity.class);
-			// plantActivity.putExtra("GARDEN_ID", gardenId);
-			// startActivity(plantActivity);
-			//
-			// }
-			// });
-		} else {
+		if (moreRight) {
+			System.out.println("moreRight");
 			// gridview code
 			if (null != mFlipper) {
 				mFlipper.setInAnimation(inFromRightAnimation());
 				mFlipper.setOutAnimation(outToLeftAnimation());
-
 			}
-			gridview = (GridView) findViewById(R.id.gridview);
-			gridview.setAdapter(new ImageAdapter(this, mThumbIdsFlowers));
+			grid();
+		} else {
 
-			gridview.setOnItemClickListener(new OnItemClickListener() {
-				public void onItemClick(AdapterView<?> parent, View v,
-						int position, long id) {
-					Intent intent = new Intent(PlantsActivity.this,
-							ImageViewActivity.class);
-					intent.putExtra(EXTRA_RES_ID, (int) id);
-					startActivity(intent);
-				}
-			});
-			final Button button = (Button) findViewById(R.id.add_plant_from_grid);
-
-			button.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent addPlantActivity = new Intent(
-							getApplicationContext(), AddPlantActivity.class);
-					addPlantActivity.putExtra("GARDEN_ID", gardenId);
-					startActivity(addPlantActivity);
-				}
-			});
+			// list code
+			System.out.println("!moreRight");
+			if (null != mFlipper) {
+				mFlipper.setInAnimation(inFromLeftAnimation());
+				mFlipper.setOutAnimation(outToRightAnimation());
+			}
+			list();
 		}
 		if (null != mFlipper) {
 			mFlipper.showPrevious();
@@ -350,57 +218,96 @@ public class PlantsActivity extends Activity {
 	}
 
 	private Animation inFromRightAnimation() {
-		Animation inFromRight = new TranslateAnimation(
+		animation = new TranslateAnimation(
 				Animation.RELATIVE_TO_PARENT, +1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
-		inFromRight.setDuration(500);
-		inFromRight.setInterpolator(new LinearInterpolator());
-		return inFromRight;
+		animation.setDuration(500);
+		animation.setInterpolator(new LinearInterpolator());
+		return animation;
 	}
 
 	private Animation outToLeftAnimation() {
-		Animation outtoLeft = new TranslateAnimation(
+		animation = new TranslateAnimation(
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, -1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
-		outtoLeft.setDuration(500);
-		outtoLeft.setInterpolator(new LinearInterpolator());
-		return outtoLeft;
+		animation.setDuration(500);
+		animation.setInterpolator(new LinearInterpolator());
+		return animation;
 	}
 
 	private Animation inFromLeftAnimation() {
-		Animation inFromRight = new TranslateAnimation(
+		animation = new TranslateAnimation(
 				Animation.RELATIVE_TO_PARENT, -1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
-		inFromRight.setDuration(500);
-		inFromRight.setInterpolator(new LinearInterpolator());
-		return inFromRight;
+		animation.setDuration(500);
+		animation.setInterpolator(new LinearInterpolator());
+		return animation;
 	}
 
 	private Animation outToRightAnimation() {
-		Animation outtoLeft = new TranslateAnimation(
+		animation = new TranslateAnimation(
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
-		outtoLeft.setDuration(500);
-		outtoLeft.setInterpolator(new LinearInterpolator());
-		return outtoLeft;
+
+		animation.setDuration(500);
+		animation.setInterpolator(new LinearInterpolator());
+		return animation;
 	}
 
-	// private List<Bitmap> retrieveBlob() {
-	// String whereClause = DatabaseOpenHelperPlant.GARDEN_ID + "= ?";
-	// String[] whereArgs = new String[] { Integer.valueOf(gardenId)
-	// .toString() };
-	// String orderBy = DatabaseOpenHelperPlant.PLANT_NAME;
-	// mDB.query(DatabaseOpenHelperPlant.TABLE_NAME,
-	// DatabaseOpenHelperPlant.columns, whereClause, whereArgs, null,
-	// null, orderBy);
-	// }
+	public void list() {
+		ArrayList<Plant> imageArry = new ArrayList<Plant>();
+		List<Plant> plants = mDbHelperPlant.getPlatsById(gardenId);
+		for (Plant cn : plants) {
+			// add plants data in arrayList
+			imageArry.add(cn);
+		}
+		adapter = new PlantListImageAdapter(this, R.layout.list_plants,
+				imageArry);
+		ListView dataList = (ListView) findViewById(R.id.list);
+		dataList.setAdapter(adapter);
 
+		button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent addPlantActivity = new Intent(getApplicationContext(),
+						AddPlantActivity.class);
+				addPlantActivity.putExtra("GARDEN_ID", gardenId);
+				startActivity(addPlantActivity);
+			}
+		});
+	}
+
+	public void grid() {
+		gridview = (GridView) findViewById(R.id.gridview);
+		gridview.setAdapter(new ImageAdapter(this, mThumbIdsFlowers));
+
+		gridview.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v,
+					int position, long id) {
+				Intent intent = new Intent(PlantsActivity.this,
+						ImageViewActivity.class);
+				intent.putExtra(EXTRA_RES_ID, (int) id);
+				startActivity(intent);
+			}
+		});
+		final Button button = (Button) findViewById(R.id.add_plant_from_grid);
+
+		button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent addPlantActivity = new Intent(getApplicationContext(),
+						AddPlantActivity.class);
+				addPlantActivity.putExtra("GARDEN_ID", gardenId);
+				startActivity(addPlantActivity);
+			}
+		});
+	}
 }
