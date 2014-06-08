@@ -102,14 +102,8 @@ public class PlantsActivity extends Activity {
 		// Reading all plants from database
 		List<Plant> plants = mDbHelperPlant.getPlatsById(gardenId);
 		for (Plant cn : plants) {
-			String log = "ID:" + cn.get_id() + " Name: " + cn.getPlantName()
-					+ " ,Image: " + cn.getPlantImage();
-
-			// Writing Plants to log
-			Log.d("Result: ", log);
 			// add plants data in arrayList
 			imageArry.add(cn);
-
 		}
 		adapter = new PlantListImageAdapter(this,
 				R.layout.list_plants, imageArry);

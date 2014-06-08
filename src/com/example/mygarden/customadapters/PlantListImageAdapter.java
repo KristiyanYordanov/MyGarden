@@ -1,6 +1,5 @@
 package com.example.mygarden.customadapters;
 
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -46,23 +45,14 @@ public class PlantListImageAdapter extends ArrayAdapter<Plant> {
 			holder = (ImageHolder) row.getTag();
 		}
 		Plant plant = data.get(position);
-		System.out.println(plant);
-		System.out.println("holder=" + holder);
-		System.out.println("holder.txtTitle=" + holder.txtTitle);
-		System.out.println("plant.getPlantName()e=" + plant.getPlantName());
 		holder.txtTitle.setText(plant.getPlantName());
 		// convert byte to bitmap take from Plant class
 		byte[] outImage = plant.getPlantImage();
 		System.out.println("outImage=" + outImage);
-		// ByteArrayInputStream imageStream = new
-		// ByteArrayInputStream(outImage);
-		// Bitmap theImage = BitmapFactory.decodeStream(imageStream);
 		if (null != outImage) {
 			Bitmap bm = convertBlobToBitmap(outImage);
-			System.out.println("bm=" + bm);
 			holder.imgIcon.setImageBitmap(bm);
 		}
-
 		return row;
 	}
 

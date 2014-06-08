@@ -7,8 +7,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Gravity;
@@ -87,16 +85,11 @@ public class AddPlantActivity extends Activity {
 								.getText().toString());
 					}
 					if (null != mImageBitmap) {
-						byte[] byteArray =ConvertDrawableToByteArray(mImageBitmap);
-						System.out.println("byteArray="+byteArray);
+						byte[] byteArray =ConvertBitmapToByteArray(mImageBitmap);
 						values.put(DatabaseOpenHelperPlant.PLANT_IMAGE, byteArray);
 					}
 				
-					// Bitmap bm = BitmapFactory.decodeByteArray(bArray, 0
-					// ,bArray.length);
-					
 					values.put(DatabaseOpenHelperPlant.GARDEN_ID, gardenId);
-					System.out.println("values="+values.toString());
 					mDB.insert(DatabaseOpenHelperPlant.TABLE_NAME, null, values);
 
 					values.clear();
@@ -115,12 +108,11 @@ public class AddPlantActivity extends Activity {
 	    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 	        Bundle extras = data.getExtras();
 	        mImageBitmap = (Bitmap) extras.get("data");
-	        System.out.println("mImageBitmap="+mImageBitmap);
 	    }
 	}
-	public static byte[] ConvertDrawableToByteArray(Bitmap imageBitmap) {
+	public static byte[] ConvertBitmapToByteArray(Bitmap imageBitmap) {
 	    ByteArrayOutputStream imageByteStream = new ByteArrayOutputStream();
-	    imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, imageByteStream);
+	    imageBitmap.compress(Bitmap.CompressFormat.PNG, 0, imageByteStream);
 	    byte[] imageByteData = imageByteStream.toByteArray();
 	    return imageByteData;
 	}
