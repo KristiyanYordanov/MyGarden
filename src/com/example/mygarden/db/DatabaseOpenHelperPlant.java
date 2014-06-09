@@ -39,7 +39,7 @@ public class DatabaseOpenHelperPlant extends SQLiteOpenHelper {
 	public DatabaseOpenHelperPlant(Context context) {
 		super(context, NAME, null, VERSION);
 		this.mContext = context;
-	//mContext.deleteDatabase(NAME);
+		// mContext.deleteDatabase(NAME);
 	}
 
 	@Override
@@ -60,7 +60,8 @@ public class DatabaseOpenHelperPlant extends SQLiteOpenHelper {
 	public List<Plant> getPlatsById(int gardenId) {
 		List<Plant> plantList = new ArrayList<Plant>();
 		// Select All Query
-		String selectQuery = "SELECT * FROM "+TABLE_NAME + " WHERE " + GARDEN_ID +"="+gardenId +" ORDER BY " + PLANT_NAME ;
+		String selectQuery = "SELECT * FROM " + TABLE_NAME + " WHERE "
+				+ GARDEN_ID + "=" + gardenId + " ORDER BY " + PLANT_NAME;
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -79,7 +80,31 @@ public class DatabaseOpenHelperPlant extends SQLiteOpenHelper {
 		db.close();
 		// return plant list
 		return plantList;
+	}
 
+	// Getting All Plants
+	public List<Plant> getPlantImagesById(int gardenId) {
+		List<Plant> plantList = new ArrayList<Plant>();
+		// Select All Query
+		String selectQuery = "SELECT " + _ID + ", " + PLANT_IMAGE + ", "
+				+ GARDEN_ID + " FROM " + TABLE_NAME + " WHERE " + GARDEN_ID
+				+ "=" + gardenId;
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				Plant plant = new Plant();
+				plant.set_id(Integer.parseInt(cursor.getString(0)));
+				plant.setPlantImage(cursor.getBlob(1));
+				// Adding plant to list
+				plantList.add(plant);
+			} while (cursor.moveToNext());
+		}
+		// close inserting data from database
+		db.close();
+		// return plant list
+		return plantList;
 	}
 
 }

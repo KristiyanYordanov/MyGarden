@@ -1,14 +1,15 @@
 package com.example.mygarden;
 
-import java.text.MessageFormat;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -23,7 +24,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.example.mygarden.bean.Plant;
@@ -93,12 +93,6 @@ public class PlantsActivity extends Activity {
 
 	}
 
-	private void myOnItemClick(int position) {
-		String str = MessageFormat
-				.format("Item clicked = {0,number}", position);
-		Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
-	}
-
 	class MyGestureDetector extends SimpleOnGestureListener {
 
 		// Detect a single-click and call my own handler.
@@ -135,7 +129,7 @@ public class PlantsActivity extends Activity {
 						moreRight = true;
 						switchLayoutStateTo(moreLeft);
 						listView.setOnTouchListener(gestureListener);
-						
+
 					}
 				}
 
@@ -218,8 +212,7 @@ public class PlantsActivity extends Activity {
 	}
 
 	private Animation inFromRightAnimation() {
-		animation = new TranslateAnimation(
-				Animation.RELATIVE_TO_PARENT, +1.0f,
+		animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, +1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
@@ -229,8 +222,7 @@ public class PlantsActivity extends Activity {
 	}
 
 	private Animation outToLeftAnimation() {
-		animation = new TranslateAnimation(
-				Animation.RELATIVE_TO_PARENT, 0.0f,
+		animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, -1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
@@ -240,8 +232,7 @@ public class PlantsActivity extends Activity {
 	}
 
 	private Animation inFromLeftAnimation() {
-		animation = new TranslateAnimation(
-				Animation.RELATIVE_TO_PARENT, -1.0f,
+		animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
@@ -251,8 +242,7 @@ public class PlantsActivity extends Activity {
 	}
 
 	private Animation outToRightAnimation() {
-		animation = new TranslateAnimation(
-				Animation.RELATIVE_TO_PARENT, 0.0f,
+		animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 1.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f,
 				Animation.RELATIVE_TO_PARENT, 0.0f);
@@ -274,6 +264,17 @@ public class PlantsActivity extends Activity {
 		ListView dataList = (ListView) findViewById(R.id.list);
 		dataList.setAdapter(adapter);
 
+		dataList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapter, View view,
+					int position, long arg) {
+				Intent intent = new Intent(getApplicationContext(),
+						AddPlantActivity.class)
+						.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+			}
+		});
+
 		button.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -287,7 +288,23 @@ public class PlantsActivity extends Activity {
 
 	public void grid() {
 		gridview = (GridView) findViewById(R.id.gridview);
-		gridview.setAdapter(new ImageAdapter(this, mThumbIdsFlowers));
+		ArrayList<Plant> imageArry = new ArrayList<Plant>();
+		List<Plant> plants = mDbHelperPlant.getPlantImagesById(gardenId);
+		ArrayList<Bitmap> plantsList = new ArrayList<Bitmap>();
+		ArrayList<Integer> plantsListIds = new ArrayList<Integer>();
+		for (Plant cn : plants) {
+			// add plants data in arrayList
+			imageArry.add(cn);
+			ByteArrayInputStream imageStream = new ByteArrayInputStream(
+					cn.getPlantImage());
+			Bitmap theImage = BitmapFactory.decodeStream(imageStream);
+			plantsList.add(theImage);
+
+			plantsListIds.add(cn.get_id());
+
+		}
+
+		gridview.setAdapter(new ImageAdapter(this, plantsList, plantsListIds));
 
 		gridview.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v,
